@@ -14,7 +14,7 @@ import { useNetworkState } from "react-use";
 import { useNavigate } from "react-router-dom";
 import { metadata, tokens } from "constants/data";
 import { useAccount, useQuery, useSignMessage } from "wagmi";
-import { UseBaseMutationResult, useMutation } from "@tanstack/react-query";
+import { UseBaseMutationResult } from "@tanstack/react-query";
 
 interface AppProviderProps {
   children: ReactElement | ReactElement[] | ReactNode;
@@ -36,25 +36,25 @@ interface AppContextType {
     signature: string;
   };
   signMessageLoading: boolean;
+  currentNetworkTokens: any[];
   setCurrentToken: Dispatch<SetStateAction<any>>;
   setAuthorization: Dispatch<SetStateAction<any>>;
   setTransferAmt: Dispatch<SetStateAction<string>>;
   setCurrentRoute: Dispatch<SetStateAction<string>>;
   setCurrentChain: Dispatch<SetStateAction<string>>;
   setDestinationToken: Dispatch<SetStateAction<any>>;
-
-  fetchQuotes: () => Promise<any>;
-  currentNetworkTokens: any[];
-  quotesRequest: UseBaseMutationResult<any, unknown, any, unknown>;
 }
 
 const AppContext = createContext<AppContextType>({} as AppContextType);
 
 export const useApp = (): AppContextType => useContext(AppContext);
 
-type QuotesPayload = {
+export type QuotesPayload = {
   address: string;
   signature: string;
+  data?: {
+    [key: string]: any;
+  };
 };
 
 const AppProvider = ({ children }: AppProviderProps) => {
@@ -87,8 +87,17 @@ const AppProvider = ({ children }: AppProviderProps) => {
   useEffect(() => {
     const auth = localStorage.getItem("authorization");
 
-    if (auth && address) setAuthorization(JSON.parse(auth));
-    else
+    if (auth) {
+      if (
+        JSON.parse(auth ?? "")?.signature &&
+        address === (JSON.parse(auth ?? "")?.address as `0x${string}`)
+      ) {
+        setAuthorization({
+          address,
+          signature: JSON.parse(auth ?? "")?.signature,
+        });
+      }
+    } else
       setAuthorization({
         address: "",
         signature: "",
@@ -99,62 +108,6 @@ const AppProvider = ({ children }: AppProviderProps) => {
     if (authorization.address && authorization.signature)
       localStorage.setItem("authorization", JSON.stringify(authorization));
   }, [authorization]);
-
-  const quotesRequest = useMutation({
-    mutationFn: async (payload: QuotesPayload) => {
-      return await axios
-        .post(
-          "/conversions/circle-api",
-          {
-            source_chain: currentChain,
-            destination_address: address,
-            source_token: currentToken?.address,
-            destination_chain: currentRoute?.chain,
-            destination_token: destinationToken?.address,
-            amount: isNaN(Number(transferAmt)) ? 0 : Number(transferAmt),
-          },
-          {
-            headers: {
-              Authorization: `Signature ${payload?.address}:${payload?.signature}`,
-            },
-          }
-        )
-        .then(response => response?.data?.data);
-    },
-    onSuccess: data => {
-      navigate(`/conversion/${data?.id}`);
-    },
-  });
-
-  const fetchQuotes = async () => {
-    if (!address) return;
-    if (!onlineState.online) return;
-
-    try {
-      if (address !== authorization?.address || !authorization?.signature) {
-        const signature = await signMessageAsync();
-
-        if (signature) {
-          setAuthorization({
-            address,
-            signature,
-          });
-          quotesRequest.mutate({
-            address,
-            signature,
-          });
-        } else return;
-      } else {
-        quotesRequest.mutate({
-          address,
-          signature: authorization?.signature,
-        });
-      }
-    } catch (error) {
-      // @ts-ignore
-      console.log(error?.message);
-    }
-  };
 
   const conversions = useQuery(
     ["tokens"],
@@ -231,8 +184,6 @@ const AppProvider = ({ children }: AppProviderProps) => {
 
         authorization,
 
-        fetchQuotes,
-        quotesRequest,
         setAuthorization,
         signMessageLoading,
       }}

@@ -1,16 +1,13 @@
-import millify from "millify";
 import { useMemo } from "react";
-import { Link } from "react-router-dom";
 import { metadata } from "constants/data";
-import ReactTimeAgo from "react-time-ago";
 import { capitalizeFirst } from "helpers/text";
-import { ArrowRight, Path } from "@phosphor-icons/react";
+import dayjs from "dayjs";
 
-interface ConversionListItemProps {
+interface ConversionDetailsProps {
   data: any;
 }
 
-const ConversionListItem = ({ data }: ConversionListItemProps) => {
+const ConversionDetails = ({ data }: ConversionDetailsProps) => {
   const chainIcons = useMemo(() => {
     const selected = Object.values(metadata).filter(
       (item: any) =>
@@ -29,22 +26,10 @@ const ConversionListItem = ({ data }: ConversionListItemProps) => {
   }, [data?.source_chain, data?.destination_chain]);
 
   return (
-    <Link to={`/conversion/${data?.uuid}`} className="conversions-list__item">
-      <div className="row">
-        {/* <div /> */}
-        {data?.created_at && !isNaN(Date.parse(data?.created_at)) && (
-          <div className="block">
-            <p className="time">
-              <ReactTimeAgo
-                date={Date.parse(data?.created_at)}
-                locale="en-US"
-              />
-            </p>
-          </div>
-        )}
-      </div>
+    <div className="conversion-details">
+      <div className="conversion-details-item">
+        <p className="title">Source chain</p>
 
-      <div className="row">
         <div className="token">
           <div className="token-img">
             <img
@@ -60,6 +45,10 @@ const ConversionListItem = ({ data }: ConversionListItemProps) => {
             )}
           </p>
         </div>
+      </div>
+
+      <div className="conversion-details-item">
+        <p className="title">Destination chain</p>
 
         <div className="token">
           <div className="token-img">
@@ -78,7 +67,9 @@ const ConversionListItem = ({ data }: ConversionListItemProps) => {
         </div>
       </div>
 
-      <div className="row">
+      <div className="conversion-details-item">
+        <p className="title">Source token</p>
+
         <div className="token">
           <div className="token-img">
             <img
@@ -86,11 +77,6 @@ const ConversionListItem = ({ data }: ConversionListItemProps) => {
               src={data?.source_token?.image_url}
             />
           </div>
-          <p>
-            {millify(data?.amount ?? 0, {
-              precision: 2,
-            })}
-          </p>
           <p
             className="token-name"
             style={{
@@ -100,6 +86,10 @@ const ConversionListItem = ({ data }: ConversionListItemProps) => {
             {data?.source_token?.symbol?.split("_").join(" ")}
           </p>
         </div>
+      </div>
+
+      <div className="conversion-details-item">
+        <p className="title">Destination token</p>
 
         <div className="token">
           <div className="token-img">
@@ -119,24 +109,56 @@ const ConversionListItem = ({ data }: ConversionListItemProps) => {
         </div>
       </div>
 
-      <div className="row">
+      <div className="conversion-details-item">
+        <p className="title">Amount</p>
+
         <div className="token">
-          <p className="token-name">
-            <Path size={16} />
-            {capitalizeFirst(data?.conversion_type?.split("_").join(" ") ?? "")}
+          <p
+            className="token-name"
+            style={{
+              textTransform: "uppercase",
+            }}
+          >
+            {data?.amount} {data?.source_token?.symbol?.split("_").join(" ")}
           </p>
         </div>
-
-        <p
-          className={`indicator indicator-${
-            data?.conversion_steps?.[2]?.status ?? "pending"
-          }`}
-        >
-          {data?.conversion_steps?.[2]?.status ?? "pending"}
-        </p>
       </div>
-    </Link>
+
+      <div className="conversion-details-item">
+        <p className="title">Conversion type</p>
+
+        <div className="token">
+          <p
+            className="token-name"
+            style={{
+              textTransform: "capitalize",
+            }}
+          >
+            {data?.conversion_type === "cctp" ? "CCTP" : data?.conversion_type}
+          </p>
+        </div>
+      </div>
+
+      <div className="conversion-details-item">
+        <p className="title">Created</p>
+
+        <div className="token">
+          <p
+            className="token-name"
+            style={{
+              textTransform: "capitalize",
+            }}
+          >
+            {isNaN(Date.parse(data?.created_at)) ? (
+              <></>
+            ) : (
+              dayjs(Date.parse(data?.created_at)).format("MMM DD, HH:mm")
+            )}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default ConversionListItem;
+export default ConversionDetails;

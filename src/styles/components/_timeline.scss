@@ -38,10 +38,22 @@
       width: 0px;
     }
     &[data-index="1"] {
-      width: calc(#{$lineWidth} / 3);
+      width: calc(#{$lineWidth} / 4);
     }
     &[data-index="2"] {
-      width: calc(#{$lineWidth} / (3 / 2));
+      width: calc(#{$lineWidth} / 2);
+    }
+    &[data-index="3"] {
+      width: calc(#{$lineWidth} / (4 / 3));
+    }
+
+    &.cctp {
+      &[data-index="1"] {
+        width: calc(#{$lineWidth} / 2);
+      }
+      &[data-index="2"] {
+        width: $lineWidth;
+      }
     }
   }
 }

@@ -55,7 +55,7 @@ const Navbar = () => {
                         position: "absolute",
                         backgroundColor: onlineState?.online
                           ? "#28a745"
-                          : "#888",
+                          : "#f00",
                         border: "3px solid var(--white)",
                       }}
                     />

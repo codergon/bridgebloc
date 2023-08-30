@@ -23,6 +23,7 @@
       "pages/*": ["./src/pages/*"],
       "context/*": ["./src/context/*"],
       "helpers/*": ["./src/helpers/*"],
+      "contracts/*": ["./src/contracts/*"],
       "constants/*": ["./src/constants/*"],
       "components/*": ["./src/components/*"]
     }

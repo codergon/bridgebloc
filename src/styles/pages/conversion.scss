@@ -14,11 +14,12 @@
 
   .conversion-container {
     gap: 28px;
-    max-width: 400px;
+    width: 100%;
+    max-width: 480px;
     flex-direction: column;
 
     .conversion {
-      gap: 24px;
+      gap: 30px;
       width: 100%;
       padding: 24px 20px;
       border-radius: 16px;
@@ -30,24 +31,10 @@
         width: 100%;
         margin-bottom: 10px;
         flex-direction: column;
-        &-header {
-          gap: 8px;
-          flex-direction: column;
-          .title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--black);
-          }
-          .subtitle {
-            font-size: 16px;
-            font-weight: 400;
-            color: var(--neutral-500);
-          }
-        }
         &-item {
           @extend %row-spaced-center;
           width: 100%;
-          font-size: 15px;
+          font-size: 16px;
 
           .token {
             @extend %row-center;
@@ -95,8 +82,8 @@
         .step-message {
           @extend %column-middle;
           gap: 14px;
-          padding: 10px 0px;
           text-align: center;
+          padding: 0px 0px 10px;
         }
       }
     }
