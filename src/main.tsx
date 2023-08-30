@@ -1,14 +1,15 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom/client'
-import { WagmiConfig } from 'wagmi'
+import "./utils/axios";
+import "./styles/index.scss";
+import * as React from "react";
+import { WagmiConfig } from "wagmi";
+import { config } from "./wagmi-setup";
+import * as ReactDOM from "react-dom/client";
+import { Providers } from "./context/Providers";
 
-import { App } from './App'
-import { config } from './wagmi'
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <WagmiConfig config={config}>
-      <App />
+      <Providers />
     </WagmiConfig>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

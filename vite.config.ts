@@ -1,16 +1,25 @@
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import path from "path";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   define: {
-    global: 'globalThis',
+    global: "globalThis",
   },
   resolve: {
     alias: {
-      process: 'process/browser',
-      util: 'util',
+      process: "process/browser",
+      util: "util",
+      // "@": path.resolve(__dirname, "./src"),
+      utils: path.resolve(__dirname, "./src/utils"),
+      types: path.resolve(__dirname, "./src/types"),
+      hooks: path.resolve(__dirname, "./src/hooks"),
+      pages: path.resolve(__dirname, "./src/pages"),
+      context: path.resolve(__dirname, "./src/context"),
+      helpers: path.resolve(__dirname, "./src/helpers"),
+      constants: path.resolve(__dirname, "./src/constants"),
+      components: path.resolve(__dirname, "./src/components"),
     },
   },
   plugins: [react()],
-})
+});

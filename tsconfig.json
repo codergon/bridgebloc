@@ -14,7 +14,18 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "baseUrl": "./src",
+    "paths": {
+      "utils/*": ["./utils/*"],
+      "types/*": ["./types/*"],
+      "hooks/*": ["./hooks/*"],
+      "pages/*": ["./pages/*"],
+      "context/*": ["./context/*"],
+      "helpers/*": ["./helpers/*"],
+      "constants/*": ["./constants/*"],
+      "components/*": ["./components/*"]
+    }
   },
   "include": ["./src"]
 }
