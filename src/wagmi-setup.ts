@@ -29,7 +29,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
     arbitrumGoerli,
     polygonZkEvmTestnet,
   ],
-  // @ts-ignore
+
   [
     infuraProvider({ apiKey: import.meta.env.VITE_INFURA_API_KEY! }),
     publicProvider(),

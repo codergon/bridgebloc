@@ -15,16 +15,16 @@
     "strict": true,
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "baseUrl": "./src",
+    "types": ["vite/client"],
     "paths": {
-      "utils/*": ["./utils/*"],
-      "types/*": ["./types/*"],
-      "hooks/*": ["./hooks/*"],
-      "pages/*": ["./pages/*"],
-      "context/*": ["./context/*"],
-      "helpers/*": ["./helpers/*"],
-      "constants/*": ["./constants/*"],
-      "components/*": ["./components/*"]
+      "utils/*": ["./src/utils/*"],
+      "types/*": ["./src/types/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "pages/*": ["./src/pages/*"],
+      "context/*": ["./src/context/*"],
+      "helpers/*": ["./src/helpers/*"],
+      "constants/*": ["./src/constants/*"],
+      "components/*": ["./src/components/*"]
     }
   },
   "include": ["./src"]
