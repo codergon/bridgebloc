@@ -18,7 +18,8 @@ import { useNetworkState } from "react-use";
 import { getDomain } from "helpers/contract";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
-import { crossChainBridgeAbi } from "contracts/index";
+import { crossChainBridgeAbiLxly } from "contracts/index";
+import { BRIDGE_CONTRACT } from "contracts/addresses";
 
 interface ConversionPayload {
   address: string;
@@ -62,7 +63,7 @@ const LxlyTxnBtn = () => {
     abi: erc20ABI,
     functionName: "approve",
     args: [
-      "0x8e326D9F79a9D944C920fC7aE899Dd181ecB0491",
+      BRIDGE_CONTRACT,
       BigInt(
         Number(transferAmt) * Math.pow(10, Number(currentToken?.decimals ?? 0))
       ),
@@ -85,10 +86,7 @@ const LxlyTxnBtn = () => {
     useContractRead({
       abi: erc20ABI,
       functionName: "allowance",
-      args: [
-        address as `0x${string}`,
-        "0x8e326D9F79a9D944C920fC7aE899Dd181ecB0491",
-      ],
+      args: [address as `0x${string}`, BRIDGE_CONTRACT],
       chainId: Number(metadata?.[currentChain]?.chain_id),
       address: currentToken.address as `0x${string}`,
     });
@@ -97,20 +95,23 @@ const LxlyTxnBtn = () => {
    * Prepare txn to send tokens
    */
   const { config } = usePrepareContractWrite({
-    ...crossChainBridgeAbi,
-    functionName: "deposit",
+    ...crossChainBridgeAbiLxly,
+    functionName: "bridge",
     args: [
       BigInt(
         Number(transferAmt) * Math.pow(10, Number(currentToken?.decimals ?? 0))
       ),
       currentToken?.address as `0x${string}`,
       destinationToken?.address as `0x${string}`,
-      getDomain(currentRoute?.chain) as number,
       address as `0x${string}`,
-      "0x8e326D9F79a9D944C920fC7aE899Dd181ecB0491",
+      true,
     ],
+
+    value: BigInt(
+      Number(transferAmt) * Math.pow(10, Number(currentToken?.decimals ?? 0))
+    ),
     chainId: Number(metadata?.[currentChain]?.chain_id),
-    address: "0x8e326D9F79a9D944C920fC7aE899Dd181ecB0491",
+    address: BRIDGE_CONTRACT,
     enabled:
       !!currentToken?.address &&
       !isNaN(Number(transferAmt)) &&
@@ -122,10 +123,10 @@ const LxlyTxnBtn = () => {
   /**
    * Send txn-hash to the server
    */
-  const cctpConversion = useMutation({
+  const lxlyConversion = useMutation({
     mutationFn: async (payload: ConversionPayload) => {
       return await axios
-        .post(`/conversions/cctp`, payload?.data, {
+        .post(`/conversions/lxly`, payload?.data, {
           headers: {
             Authorization: `Signature ${payload?.address}:${payload?.signature}`,
           },
@@ -136,6 +137,8 @@ const LxlyTxnBtn = () => {
       navigate(`/conversion/${data?.id}`);
     },
   });
+
+  console.log(approvedAmount);
 
   const processConversion = async () => {
     if (!address || !onlineState.online) return;
@@ -182,10 +185,9 @@ const LxlyTxnBtn = () => {
         await publicClient.waitForTransactionReceipt({
           hash: txn?.hash,
         });
+        setConfirmingTxn(false);
 
-        setConfirmingTxn(!true);
-
-        cctpConversion.mutate({
+        lxlyConversion.mutate({
           address: authData.address,
           signature: authData.signature,
           data: {
@@ -197,6 +199,8 @@ const LxlyTxnBtn = () => {
       }
     } catch (error: any) {
       console.log(error?.message);
+    } finally {
+      setConfirmingTxn(false);
     }
   };
 
@@ -204,12 +208,12 @@ const LxlyTxnBtn = () => {
     <button
       className="primary-btn"
       style={{
-        marginTop: "20px",
+        marginTop: "10px",
       }}
       onClick={processConversion}
     >
       Continue
-      {(cctpConversion.isLoading ||
+      {(lxlyConversion.isLoading ||
         isLoading ||
         confirmingTxn ||
         approving ||

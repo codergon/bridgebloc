@@ -10,7 +10,7 @@ import {
   usePrepareContractWrite,
 } from "wagmi";
 import axios from "axios";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { metadata } from "constants/data";
 import { useApp } from "context/AppContext";
 import { ClipLoader } from "react-spinners";
@@ -19,6 +19,7 @@ import { getDomain } from "helpers/contract";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { crossChainBridgeAbi } from "contracts/index";
+import { networkContracts } from "contracts/addresses";
 
 interface ConversionPayload {
   address: string;
@@ -55,6 +56,10 @@ const CctpTxnBtn = () => {
       "Message: Welcome to BridgeBloc!\nURI: https://bridgebloc.vercel.app",
   });
 
+  const DEPOSIT_CONTRACT: `0x${string}` = useMemo(() => {
+    return networkContracts[currentChain] as `0x${string}`;
+  }, []);
+
   /**
    * Prepare txn to approve allowance (max amount that can be spent)
    */
@@ -62,7 +67,7 @@ const CctpTxnBtn = () => {
     abi: erc20ABI,
     functionName: "approve",
     args: [
-      "0x8e326D9F79a9D944C920fC7aE899Dd181ecB0491",
+      DEPOSIT_CONTRACT,
       BigInt(
         Number(transferAmt) * Math.pow(10, Number(currentToken?.decimals ?? 0))
       ),
@@ -85,10 +90,7 @@ const CctpTxnBtn = () => {
     useContractRead({
       abi: erc20ABI,
       functionName: "allowance",
-      args: [
-        address as `0x${string}`,
-        "0x8e326D9F79a9D944C920fC7aE899Dd181ecB0491",
-      ],
+      args: [address as `0x${string}`, DEPOSIT_CONTRACT],
       chainId: Number(metadata?.[currentChain]?.chain_id),
       address: currentToken.address as `0x${string}`,
     });
@@ -107,10 +109,10 @@ const CctpTxnBtn = () => {
       destinationToken?.address as `0x${string}`,
       getDomain(currentRoute?.chain) as number,
       address as `0x${string}`,
-      "0x8e326D9F79a9D944C920fC7aE899Dd181ecB0491",
+      DEPOSIT_CONTRACT,
     ],
     chainId: Number(metadata?.[currentChain]?.chain_id),
-    address: "0x8e326D9F79a9D944C920fC7aE899Dd181ecB0491",
+    address: DEPOSIT_CONTRACT,
     enabled:
       !!currentToken?.address &&
       !isNaN(Number(transferAmt)) &&
@@ -207,6 +209,8 @@ const CctpTxnBtn = () => {
       }
     } catch (error: any) {
       console.log(error?.message);
+    } finally {
+      setConfirmingTxn(false);
     }
   };
 
@@ -214,7 +218,7 @@ const CctpTxnBtn = () => {
     <button
       className="primary-btn"
       style={{
-        marginTop: "20px",
+        marginTop: "10px",
       }}
       onClick={processConversion}
     >

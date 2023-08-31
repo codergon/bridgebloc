@@ -190,46 +190,6 @@ export const tokens = [
     chain_name: "polygon_pos",
   },
   {
-    name: "WETH",
-    symbol: "weth",
-    address: "0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9",
-    decimals: 18,
-    chain_id: 1101,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/weth.png",
-    chain_name: "polygon_zkevm",
-  },
-  {
-    name: "Dai",
-    symbol: "dai",
-    address: "0x9D233A907E065855D2A9c7d4B552ea27fB2E5a36",
-    decimals: 18,
-    chain_id: 5,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/dai.png",
-    chain_name: "ethereum_testnet",
-  },
-  {
-    name: "WETH",
-    symbol: "weth",
-    address: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
-    decimals: 18,
-    chain_id: 5,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/weth.png",
-    chain_name: "ethereum_testnet",
-  },
-  {
-    name: "Tether",
-    symbol: "usdt",
-    address: "0xfad6367E97217cC51b4cd838Cc086831f81d38C2",
-    decimals: 6,
-    chain_id: 5,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/tether.png",
-    chain_name: "ethereum_testnet",
-  },
-  {
     name: "USD Coin",
     symbol: "usdc",
     address: "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
@@ -240,36 +200,6 @@ export const tokens = [
     chain_name: "ethereum_testnet",
   },
   {
-    name: "Dai",
-    symbol: "dai",
-    address: "0x11fE4B6AE13d2a6055C8D9cF65c55bac32B5d844",
-    decimals: 18,
-    chain_id: 421613,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/dai.png",
-    chain_name: "arbitrum_one_testnet",
-  },
-  {
-    name: "WETH",
-    symbol: "weth",
-    address: "0x7F5bc2250ea57d8ca932898297b1FF9aE1a04999",
-    decimals: 18,
-    chain_id: 421613,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/weth.png",
-    chain_name: "arbitrum_one_testnet",
-  },
-  {
-    name: "Tether",
-    symbol: "usdt",
-    address: "0x147f7266FCD7713B2fB220103325ed765Abd6715",
-    decimals: 6,
-    chain_id: 421613,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/tether.png",
-    chain_name: "arbitrum_one_testnet",
-  },
-  {
     name: "USD Coin",
     symbol: "usdc",
     address: "0xfd064A18f3BF249cf1f87FC203E90D8f650f2d63",
@@ -278,36 +208,6 @@ export const tokens = [
     image_url:
       "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/usd-coin.png",
     chain_name: "arbitrum_one_testnet",
-  },
-  {
-    name: "Dai",
-    symbol: "dai",
-    address: "0x001B3B4d0F3714Ca98ba10F6042DaEbF0B1B7b6F",
-    decimals: 18,
-    chain_id: 80001,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/dai.png",
-    chain_name: "polygon_pos_testnet",
-  },
-  {
-    name: "WETH",
-    symbol: "weth",
-    address: "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
-    decimals: 18,
-    chain_id: 80001,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/weth.png",
-    chain_name: "polygon_pos_testnet",
-  },
-  {
-    name: "Tether",
-    symbol: "usdt",
-    address: "0xA02f6adc7926efeBBd59Fd43A84f4E0c0c91e832",
-    decimals: 6,
-    chain_id: 80001,
-    image_url:
-      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/tether.png",
-    chain_name: "polygon_pos_testnet",
   },
   {
     name: "USD Coin",
@@ -328,6 +228,16 @@ export const tokens = [
     image_url:
       "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/usd-coin.png",
     chain_name: "avalanche_testnet",
+  },
+  {
+    name: "USD Coin",
+    symbol: "usdc",
+    address: "0xA40b0dA87577Cd224962e8A3420631E1C4bD9A9f",
+    decimals: 6,
+    chain_id: 1442,
+    image_url:
+      "https://bridgebloc-api-eb9bd3c3ed18.herokuapp.com/static/images/usd-coin.png",
+    chain_name: "polygon_zkevm_testnet",
   },
 ];
 

@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { metadata } from "constants/data";
 import ReactTimeAgo from "react-time-ago";
+import { Path } from "@phosphor-icons/react";
 import { capitalizeFirst } from "helpers/text";
-import { ArrowRight, Path } from "@phosphor-icons/react";
 
 interface ConversionListItemProps {
   data: any;
@@ -129,10 +129,12 @@ const ConversionListItem = ({ data }: ConversionListItemProps) => {
 
         <p
           className={`indicator indicator-${
-            data?.conversion_steps?.[2]?.status ?? "pending"
+            data?.conversion_steps?.[data?.conversion_steps?.length - 1]
+              ?.status ?? "pending"
           }`}
         >
-          {data?.conversion_steps?.[2]?.status ?? "pending"}
+          {data?.conversion_steps?.[data?.conversion_steps?.length - 1]
+            ?.status ?? "pending"}
         </p>
       </div>
     </Link>

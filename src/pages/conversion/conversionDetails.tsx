@@ -134,7 +134,9 @@ const ConversionDetails = ({ data }: ConversionDetailsProps) => {
               textTransform: "capitalize",
             }}
           >
-            {data?.conversion_type === "cctp" ? "CCTP" : data?.conversion_type}
+            {data?.conversion_type === "cctp"
+              ? "CCTP"
+              : data?.conversion_type?.split("_").join(" ")}
           </p>
         </div>
       </div>

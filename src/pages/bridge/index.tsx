@@ -49,7 +49,14 @@ const Bridge = () => {
             ) : currentRoute?.route === "lxly" ? (
               <LxlyTxnBtn />
             ) : (
-              <></>
+              <button
+                className="primary-btn"
+                style={{
+                  marginTop: "10px",
+                }}
+              >
+                Continue
+              </button>
             )}
           </div>
         </div>

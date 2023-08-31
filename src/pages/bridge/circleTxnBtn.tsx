@@ -93,7 +93,7 @@ const CircleTxnBtn = () => {
     <button
       className="primary-btn"
       style={{
-        marginTop: "20px",
+        marginTop: "10px",
       }}
       onClick={processConversion}
     >

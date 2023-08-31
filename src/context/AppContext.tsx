@@ -10,11 +10,8 @@ import {
   SetStateAction,
 } from "react";
 import axios from "axios";
-import { useNetworkState } from "react-use";
-import { useNavigate } from "react-router-dom";
+import { useAccount, useQuery } from "wagmi";
 import { metadata, tokens } from "constants/data";
-import { useAccount, useQuery, useSignMessage } from "wagmi";
-import { UseBaseMutationResult } from "@tanstack/react-query";
 
 interface AppProviderProps {
   children: ReactElement | ReactElement[] | ReactNode;
@@ -35,7 +32,7 @@ interface AppContextType {
     address: string;
     signature: string;
   };
-  signMessageLoading: boolean;
+
   currentNetworkTokens: any[];
   setCurrentToken: Dispatch<SetStateAction<any>>;
   setAuthorization: Dispatch<SetStateAction<any>>;
@@ -58,14 +55,7 @@ export type QuotesPayload = {
 };
 
 const AppProvider = ({ children }: AppProviderProps) => {
-  const navigate = useNavigate();
   const { address } = useAccount();
-  const onlineState = useNetworkState();
-  const { signMessageAsync, isLoading: signMessageLoading } = useSignMessage({
-    message:
-      "Message: Welcome to BridgeBloc!\nURI: https://bridgebloc.vercel.app",
-  });
-
   const [authorization, setAuthorization] = useState({
     address: "",
     signature: "",
@@ -73,8 +63,8 @@ const AppProvider = ({ children }: AppProviderProps) => {
 
   const [transferAmt, setTransferAmt] = useState("");
   const [currentRoute, setCurrentRoute] = useState<any>({});
-  const [currentChain, setCurrentChain] = useState("ethereum");
   const [destinationToken, setDestinationToken] = useState<any>({});
+  const [currentChain, setCurrentChain] = useState("ethereum_testnet");
   const [currentToken, setCurrentToken] = useState<{
     [key: string]: string;
   }>({});
@@ -124,12 +114,14 @@ const AppProvider = ({ children }: AppProviderProps) => {
 
   const routes = useMemo(() => {
     const routesArr = Object.keys(conversions.data || {});
-    return routesArr.map(chain => {
-      return {
-        chain,
-        image_url: metadata?.[chain]?.image_url ?? "",
-      };
-    });
+    return routesArr
+      ?.filter(chain => chain.includes("testnet"))
+      ?.map(chain => {
+        return {
+          chain,
+          image_url: metadata?.[chain]?.image_url ?? "",
+        };
+      });
   }, [conversions.data]);
 
   const chainRoutes = useMemo(() => {
@@ -170,22 +162,20 @@ const AppProvider = ({ children }: AppProviderProps) => {
         chainTokens,
         chainRoutes,
         transferAmt,
-        setTransferAmt,
-        receivedValue,
-        currentToken,
-        setCurrentToken,
+        currentRoute,
         currentChain,
+        currentToken,
+        receivedValue,
+        setTransferAmt,
+        setCurrentToken,
+        setCurrentRoute,
         setCurrentChain,
         destinationToken,
         setDestinationToken,
-        currentRoute,
-        setCurrentRoute,
         currentNetworkTokens,
 
         authorization,
-
         setAuthorization,
-        signMessageLoading,
       }}
     >
       {children}

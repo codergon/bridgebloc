@@ -63,7 +63,7 @@ const CircleRoute = ({
       const txn = await writeAsync?.();
 
       if (txn?.hash)
-        await axios.post(
+        await axios.patch(
           `conversions/circle-api/${uuid}/add-deposit-hash`,
           {
             tx_hash: txn?.hash,
@@ -207,7 +207,10 @@ const CircleRoute = ({
                 }}
                 onClick={() => startPayment()}
               >
-                Pay
+                Pay {data?.amount}
+                <span style={{ textTransform: "uppercase" }}>
+                  {data?.source_token?.symbol?.split("_").join(" ")}
+                </span>
                 {(loading || isLoading) && (
                   <ClipLoader
                     size={16}

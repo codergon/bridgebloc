@@ -31,7 +31,7 @@ const Conversion = () => {
         .then(response => response?.data?.data);
     },
     {
-      refetchInterval: 15000,
+      refetchInterval: 30000,
       enabled:
         !!uuid &&
         authorization?.address === address &&
@@ -52,7 +52,7 @@ const Conversion = () => {
 
           <ConversionDetails data={data} />
 
-          {data?.conversion_type === "cirle_api" ? (
+          {data?.conversion_type === "circle_api" ? (
             <CircleRoute
               data={data}
               refetch={refetch}
