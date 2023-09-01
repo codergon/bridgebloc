@@ -31,7 +31,7 @@ const Conversion = () => {
         .then(response => response?.data?.data);
     },
     {
-      refetchInterval: 30000,
+      refetchInterval: 15000,
       enabled:
         !!uuid &&
         authorization?.address === address &&
