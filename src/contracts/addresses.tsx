@@ -10,8 +10,8 @@ const ETHEREUM_TESTNET = "0x354116a3befd3c2b9e98bc35127dacf735471ad8";
 const networkContracts: {
   [key: string]: `0x${string}`;
 } = {
-  arbitrum: ARBITRUM_MAINNET,
-  arbitrum_testnet: ARBITRUM_TESTNET,
+  arbitrum_one: ARBITRUM_MAINNET,
+  arbitrum_one_testnet: ARBITRUM_TESTNET,
   ethereum_testnet: ETHEREUM_TESTNET,
   avalanche_mainnet: AVALANCHE_MAINNET,
   avalanche_testnet: AVALANCHE_TESTNET,

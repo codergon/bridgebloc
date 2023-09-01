@@ -60,6 +60,10 @@ const CctpTxnBtn = () => {
     return networkContracts[currentChain] as `0x${string}`;
   }, []);
 
+  const DEPOSIT_CONTRACT_DESTINATION: `0x${string}` = useMemo(() => {
+    return networkContracts[currentRoute?.chain] as `0x${string}`;
+  }, []);
+
   /**
    * Prepare txn to approve allowance (max amount that can be spent)
    */
@@ -109,7 +113,7 @@ const CctpTxnBtn = () => {
       destinationToken?.address as `0x${string}`,
       getDomain(currentRoute?.chain) as number,
       address as `0x${string}`,
-      DEPOSIT_CONTRACT,
+      DEPOSIT_CONTRACT_DESTINATION,
     ],
     chainId: Number(metadata?.[currentChain]?.chain_id),
     address: DEPOSIT_CONTRACT,
